@@ -398,6 +398,26 @@ sub color {
 	}
 
 	# multi palettes
+	# MarkLogic colors
+	if (defined $type and $type eq "ml") {
+                if ($name =~ /xdmp::/) {                # XDMP
+                        $type = "aqua";
+                } elsif ($name =~ /svc::/) {    # SVC
+                        $type = "green"
+                } elsif ($name =~ m:_\[j\]$:) {      # jit annotation
+                        $type = "blue";
+                } elsif ($name =~ m:_\[i\]$:) { # inline annotation
+                        $type = "orange";
+                } elsif ($name =~ m:^L?(java|org|com|io|sun)/:) {       # Java
+                        $type = "purple";
+                } elsif ($name =~ /v8::/) {     # v8
+                        $type = "yellow"
+                } else {                        # system
+                        $type = "red";
+                }
+                # fall-through to color palettes
+        }
+
 	if (defined $type and $type eq "java") {
 		# Handle both annotations (_[j], _[i], ...; which are
 		# accurate), as well as input that lacks any annotations, as

@@ -398,33 +398,56 @@ sub color {
 	}
 
 	# multi palettes
-        if (defined $type and $type eq "ml") {
-                if ($name =~ /xdmp::/) {                # XDMP
-                        $type = "aqua";
-                } elsif ($name =~ /svc::/) {    # SVC
-                        $type = "green"
-                } elsif ($name =~ m:_\[j\]$:) {      # jit annotation
-                        $type = "blue";
-                } elsif ($name =~ m:_\[i\]$:) { # inline annotation
-                        $type = "orange";
-                } elsif ($name =~ m:^L?(java|org|com|io|sun)/:) {       # Java
-                        $type = "purple";
-                } elsif ($name =~ /v8::/) {     # v8
-                        $type = "yellow"
-                } elsif ($name =~ /core::/) {
-                        $type = "grey"
-                } elsif ($name =~ /Microsoft/) {
-                        $type = "brown"
-                } elsif ($name =~ /CNTK/) {
-                        $type = "brown"
-                } elsif ($name =~ /_kmp_/) {
-                        $type = "white"
-                } elsif ($name =~ /MarkLogic/) {
-                        $type = "white"
-                } else {                        # system
-                        $type = "red";
-                }
-        }
+	if (defined $type and $type eq "crdb") {
+			if ($name =~ /pkg.kv/) {                # KV
+					$type = "aqua";
+			} elsif ($name =~ /google.golang.org.grpc/) {
+					$type = "white"
+			} elsif ($name =~ /runtime/) {
+					$type = "grey"
+			} elsif ($name =~ /pkg.sql/) {
+					$type = "green"
+			} elsif ($name =~ /pkg.rpc/) {
+					$type = "red"
+			} elsif ($name =~ /pebble/) {
+					$type = "blue"
+			} elsif ($name =~ /workload/) {
+					$type = "yellow"
+			} elsif ($name =~ /cockroach/) {
+					$type = "orange"
+			} else {                        # system
+					$type = "red";
+			}
+			# fall-through to color palettes
+	}
+
+	if (defined $type and $type eq "ml") {
+			if ($name =~ /xdmp::/) {                # XDMP
+					$type = "aqua";
+			} elsif ($name =~ /svc::/) {    # SVC
+					$type = "green"
+			} elsif ($name =~ m:_\[j\]$:) {      # jit annotation
+					$type = "blue";
+			} elsif ($name =~ m:_\[i\]$:) { # inline annotation
+					$type = "orange";
+			} elsif ($name =~ m:^L?(java|org|com|io|sun)/:) {       # Java
+					$type = "purple";
+			} elsif ($name =~ /v8::/) {     # v8
+					$type = "yellow"
+			} elsif ($name =~ /core::/) {
+					$type = "grey"
+			} elsif ($name =~ /Microsoft/) {
+					$type = "brown"
+			} elsif ($name =~ /CNTK/) {
+					$type = "brown"
+			} elsif ($name =~ /_kmp_/) {
+					$type = "white"
+			} elsif ($name =~ /MarkLogic/) {
+					$type = "white"
+			} else {                        # system
+					$type = "red";
+			}
+	}
 	if (defined $type and $type eq "java") {
 		# Handle both annotations (_[j], _[i], ...; which are
 		# accurate), as well as input that lacks any annotations, as
@@ -537,25 +560,24 @@ sub color {
 		my $g = 90 + int(65 * $v1);
 		return "rgb($r,$g,0)";
 	}
-        if (defined $type and $type eq "grey") {
-                my $r = 90 + int(65 * $v1);
-                my $g = 90 + int(65 * $v1);
-                my $b = 90 + int(65 * $v1);
-                return "rgb($r,$g,$b)";
-        }
-        if (defined $type and $type eq "brown") {
-                my $r = 120 + int(5 * $v1);
-                my $g = 100 + int(5 * $v1);
-                my $b = 80 + int(5 * $v1);
-                return "rgb($r,$g,$b)";
-        }
-        if (defined $type and $type eq "white") {
-                my $r = 255 - int(25 * $v1);
-                my $g = 255 - int(25 * $v1);
-                my $b = 255 - int(25 * $v1);
-                return "rgb($r,$g,$b)";
-        }
-
+	if (defined $type and $type eq "grey") {
+			my $r = 90 + int(65 * $v1);
+			my $g = 90 + int(65 * $v1);
+			my $b = 90 + int(65 * $v1);
+			return "rgb($r,$g,$b)";
+	}
+	if (defined $type and $type eq "brown") {
+			my $r = 120 + int(5 * $v1);
+			my $g = 100 + int(5 * $v1);
+			my $b = 80 + int(5 * $v1);
+			return "rgb($r,$g,$b)";
+	}
+	if (defined $type and $type eq "white") {
+			my $r = 255 - int(25 * $v1);
+			my $g = 255 - int(25 * $v1);
+			my $b = 255 - int(25 * $v1);
+			return "rgb($r,$g,$b)";
+	}
 	return "rgb(0,0,0)";
 }
 
